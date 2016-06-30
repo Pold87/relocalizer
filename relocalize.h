@@ -9,8 +9,6 @@
 #include "opencv2/features2d.hpp"
 #include "opencv2/xfeatures2d.hpp"
 #include "opencv2/highgui.hpp"
-#include <boost/python.hpp>
-
 
 class Relocalizer {
 
@@ -21,28 +19,14 @@ class Relocalizer {
   cv::Mat des_ref; // Descriptors of the keypoints of the ref image
   cv::Ptr<cv::xfeatures2d::SURF> detector; // Feature detector
   cv::BFMatcher matcher;
-      
+
    std::vector<cv::KeyPoint> matched_query, matched_map, inliers_query, inliers_ref;
    std::vector<cv::DMatch> good_matches;
 
  public:
 
    Relocalizer(std::string ref_img_path);
-   std::vector<float> calcLocation(cv::Mat query_img);
-   boost::python::list calcLocationFromPath(std::string query_img_path);
-  
-};
-
-
-
-using namespace boost::python;
-
-BOOST_PYTHON_MODULE(relocalize)
-{
-  class_<Relocalizer>("Relocalizer", init<std::string>())
-    .def("calcLocation", &Relocalizer::calcLocation)
-    .def("calcLocationFromPath", &Relocalizer::calcLocationFromPath)
-    ;
+   std::vector<float> calcLocation(cv::Mat query_img, int num);
 };
 
 #endif

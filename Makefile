@@ -1,14 +1,17 @@
 CFLAGS = `pkg-config --cflags opencv`
 LIBS = `pkg-config --libs opencv`
-ALLFLAGS = $(CFLAGS) $(LIBS) -std=c++11 -lboost_filesystem -lboost_system -lpython2.7 -lboost_python -I/usr/include/python2.7/
+ALLFLAGS = $(CFLAGS) $(LIBS) -std=c++11 -lboost_filesystem -lboost_system
 
-all: relocalizer
+all: relocalize_folder
 
-relocalizer: relocalize.o
-	g++ -g relocalize.o -o relocalizer $(ALLFLAGS)
+relocalize_folder: relocalize_folder.o
+	g++ -g relocalize_folder.o -o relocalize_folder relocalize.cpp $(ALLFLAGS)
 
-relocalize.o: relocalize.cpp relocalize.h
-	g++ -g -c relocalize.cpp relocalize.h $(ALLFLAGS)
+relocalize_folder.o: relocalize.cpp relocalize.h
+	g++ -g -c relocalize_folder.cpp relocalize.cpp relocalize.h $(ALLFLAGS)
+
+show_matches:
+	g++ -g show_matches.cpp -o show_matches  $(ALLFLAGS)
 
 clean:
-	rm *.o relocalizer
+	rm *.o relocalize_folder
